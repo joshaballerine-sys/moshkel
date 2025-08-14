@@ -1,10 +1,9 @@
-name: Build Flutter APK
+name: Flutter CI
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -17,10 +16,12 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.0'
+          flutter-version: '3.22.0' # یا نسخه‌ای که پروژه‌ت استفاده می‌کنه
 
       - name: Install dependencies
-        run: flutter pub get
+        run: |
+          flutter pub add intl:^0.18.1
+          flutter pub get
 
       - name: Build APK
         run: flutter build apk --release
@@ -28,5 +29,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-release.apk
+          name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
